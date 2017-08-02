@@ -1,18 +1,37 @@
 package main
 
 import (
-	"io"
+	//"io"
+	"log"
+	"fmt"
 	"net/http"
 	"encoding/json"
+	"github.com/julienschmidt/httprouter"
 )
-
-func hello(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, "Hello world!")
+type Fruits map[string]int
+type Vegetables map[string]int
+type Payload struct {
+    Stuff Data
+}
+type Data struct {
+    Fruit Fruits
+    Veggies Vegetables
+}
+//func hello(w http.ResponseWriter, r *http.Request) {
+	//io.WriteString(w, "Hello world!")
+//}
+func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    response, err := getJsonResponse();
+    if err != nil {
+        panic(err)
+    }
+    fmt.Fprintf(w, string(response))
 }
 
 func main() {
-	http.HandleFunc("/", hello)
-	http.ListenAndServe(":8000", nil)
+	router := httprouter.New()
+    router.GET("/", Index)
+    log.Fatal(http.ListenAndServe(":8000", router))
 }
 func getJsonResponse()([]byte, error) {
     fruits := make(map[string]int)
