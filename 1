@@ -1,0 +1,26 @@
+package main 
+import (
+	"fmt"
+	"time"
+)
+type fork byte
+
+func testing(d chan fork,i int){
+	fmt.Println("inside first")
+	time.Sleep(100 * 2)
+	//val := <-d
+	fmt.Println("entering test")
+	fmt.Println("channel value is i"  )
+	//fmt.Println(val)
+	//d <- val
+}
+
+func main(){
+
+	for i:=0;i<4;i++{
+		dd := make(chan fork,1)
+		dd <- 'f'
+		go testing(dd,i)
+		time.Sleep(20000)
+	}
+}

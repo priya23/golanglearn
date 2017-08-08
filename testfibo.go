@@ -1,5 +1,7 @@
 package main
- 
+
+import 
+("fmt")
 func fibonacci() func() int {
   first , second , sum:= 0,1,0
 
@@ -10,6 +12,7 @@ func fibonacci() func() int {
     //sum ,first,second=first,second,first+second
  return sum
   }
+}
 
 func main(){
   f:=fibonacci()
