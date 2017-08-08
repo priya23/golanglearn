@@ -17,19 +17,26 @@ type Philospher struct{
 
 func (ph *Philospher) eating(){
 	fmt.Println("started eating")
-	<-ph.righthand
-	//time.Sleep(time.Second *1)
-	select {
-	case x,ok:= <-ph.lefthand: 
-		if ok {
-            fmt.Printf("Value %d was read.\n", x)
-        } else {
-            fmt.Println("Channel closed!")
-        }
-    default:
-        fmt.Println("No value ready, moving on.")
 
-	}
+	for{
+		_,ok:= <-ph.righthand
+      _,ok1:= <-ph.lefthand
+      if (!ok) && (!ok1) {
+      	sleeprandom()
+      	continue 
+      }else if (!ok){
+      	ph.lefthand <- 1
+      	sleeprandom()
+      	continue
+      }else if (!ok1){
+      	ph.righthand <- 1
+      	sleeprandom()
+      	continue 
+      }else {
+      	fmt.Println("lock acquired")
+      	break
+      }
+    }
 	fmt.Println("value is read")
 }
 
